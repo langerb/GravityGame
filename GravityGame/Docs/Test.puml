@@ -1,0 +1,64 @@
+
+@startuml
+skinparam backgroundColor #EEEBDC
+skinparam monochrome true
+hide circle
+hide members
+hide stereotypes
+skinparam class{
+  BorderColor<<OutOfScope>> Tomato
+  BackgroundColor<<OutOfScope>> Wheat
+}
+
+namespace system {
+
+  namespace device {
+    class gPump <<OutOfScope>>
+    class "Reusable\nUnit" as RU <<OutOfScope>>
+    class "Disposable\nUnit" as DU <<OutOfScope>>
+    class "Insulin\nCartridge" as IC<<OutOfScope>>
+    class "Bluetooth\nInterface" as BT_IF <<OutOfScope>>
+    class Firmware <<OutOfScope>>
+
+    gPump *-- RU
+    gPump o-- DU
+    DU o-- IC
+    RU o- BT_IF
+    RU o-- Firmware
+  }
+
+  namespace mobile {
+    abstract class "Patient App" as PatientApp
+    class "Patient\nSmartphone" as Mobile  <<OutOfScope>>
+    class "iOS\nDevice" as iOS <<OutOfScope>>
+    class "Android\nDevice" as Android <<OutOfScope>>
+    Mobile ^-- iOS
+    Mobile ^-- Android
+    Mobile o- "PatientApp"
+  }
+
+  namespace cloud {
+    abstract class WebApplication
+    abstract class Backend
+    class DockerContainer <<OutOfScope>>
+    DockerContainer o-- WebApplication
+    DockerContainer o-- Backend
+  }
+
+  namespace desktop {
+    class WebBrowser <<OutOfScope>>
+    class "Windows\nDesktop" as Windows <<OutOfScope>>
+    abstract class "BT Proxy\nApplication" as BTProxy
+    Windows o--BTProxy    
+    Windows o--WebBrowser
+  }
+
+}
+
+system.cloud.WebApplication .. system.desktop.WebBrowser
+system.cloud.Backend -- system.mobile.PatientApp : data (JSON)
+system.mobile.Mobile -- system.device.BT_IF : data (BT)
+system.device.BT_IF -- system.desktop.BTProxy : data (BT)
+
+
+@enduml
