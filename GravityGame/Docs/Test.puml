@@ -19,6 +19,7 @@ namespace system {
     class "Insulin\nCartridge" as IC<<OutOfScope>>
     class "Bluetooth\nInterface" as BT_IF <<OutOfScope>>
     class Firmware <<OutOfScope>>
+    class TEST
 
     gPump *-- RU
     gPump o-- DU
